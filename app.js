@@ -1,8 +1,8 @@
 var express           = require("express"),
     app               = express(),
-    request           = require("request"),
     bodyParser        = require("body-parser"),
     mongoose          = require("mongoose"),
+    paginate          = require("mongoose-paginate"),
     passport          = require("passport"),
     LocalStrategy     = require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
@@ -40,6 +40,15 @@ var express           = require("express"),
       username:String
     })
     var Postuser = mongoose.model("Postuser",postuserSchema);
+
+    var newsSchema = new mongoose.Schema({
+      image:String,
+      title:String,
+      description:String
+    });
+    newsSchema.plugin(paginate);
+
+    var newsModel = mongoose.model("news" , newsSchema);
 
     mongoose.connect("mongodb://localhost/VJReddit" , {useNewUrlParser:true});
     app.use(bodyParser.urlencoded({extended: true}));
@@ -135,7 +144,7 @@ app.use(function(req,res,next)
     })
     })
 
-    app.get("/news" , function(req,res)
+    app.get("/news/:page" , function(req,res)
     {
       var searchObj;
       if(req.query.search){
@@ -145,20 +154,22 @@ app.use(function(req,res,next)
       }
         newsapi.v2.everything({
             q: searchObj,
-            pageSize:100
+            pageSize:5,
+            page:req.params.page
           }).then(response => {
             res.render("news" , {response:response,searchObj:searchObj});
           });
     });
   
 
-    app.get("/news/:searchObj/:id" , function(req,res)
+    app.get("/news/:searchObj/:id/:page" , function(req,res)
     {
       var searchObj = req.params.searchObj;
       var i = req.params.id;
       newsapi.v2.everything({
         q: searchObj,
-        pageSize:100
+        pageSize:5,
+        page:req.params.page
       }).then(response => {       
         res.render("show" , {response:response , i:i});
       });

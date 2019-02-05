@@ -9,6 +9,7 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "mongoose": "^5.4.4",
+    "mongoose-paginate": "^5.0.3",
     "newsapi": "^2.4.0",
     "nodemailer": "^5.1.1",
     "pagination": "^0.4.6",

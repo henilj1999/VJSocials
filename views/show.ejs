@@ -1,0 +1,20 @@
+<% include partials/header.ejs %>
+<div class="row text-center " style="display:flex ; flex-wrap: wrap;">
+        
+            <% if(response.articles[i] != undefined) { %>
+            <div class= "col-md-12 col-sm-12">
+                <div >
+                    <img src="<%=response.articles[i].urlToImage%>" style="width:75%;">
+                
+                    <div class = "caption">
+                        <h4><%= response.articles[i].title %> </h4>
+                    </div>
+                </div>
+                <p>
+                <%= response.articles[i].content %>
+                </p>
+            </div>
+            <% } %>
+    </div>
+
+    <% include partials/footer.ejs %>

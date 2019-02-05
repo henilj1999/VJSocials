@@ -1,0 +1,95 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+body
+{
+    background-image: url("./landi.jpg");
+    background-size: 100%;
+    background-position-y:7%; 
+    background-position-x:100%;
+    font: normal 24px sans-serif;
+    color:#555;
+}
+
+
+
+nav{
+    list-style: none;
+}
+
+a:hover
+{
+    opacity: 1;
+}
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 35px;
+    padding-left: 100px;
+    padding-right: 100px;
+    animation: 1s fadein 0.5s forwards;
+    opacity: 0;
+}
+@keyframes fadein
+{
+    100%{
+        opacity: 1;
+    }
+}
+
+header h2
+{
+    font-family: "Quicksand" , sans-serif;
+    font-size: 36px;
+}
+
+header nav{
+    display: flex;
+    margin-right: -15px;
+}
+
+header nav li{
+    margin: 0 15px;
+}
+
+li a{
+    text-decoration: none;
+    opacity: 0.75;
+}
+
+.cont
+{
+    padding-top: 100px;
+    margin-left: 20px;
+    font-size: 40px; 
+    color:#3DB9C2;
+}
+.container
+{
+    padding-left:0;
+    margin-left: 60px;
+}
+span{
+    color:white;
+    font-size: 20px;
+    padding-left: 30px;
+}
+
+.own
+{
+    
+    width:25%;
+    margin-top: 100px;
+    margin-right:50px;
+    color:#4AA6BA;
+    padding: 10px;
+    text-align: center;
+    float: right;
+}
+.butt
+{ 
+        width:100px;
+}

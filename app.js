@@ -35,11 +35,19 @@ const cloud = "di143nol9";
     userSchema.plugin(passportLocalMongoose);
     var User = mongoose.model("User" , userSchema);
 
+    //Comments Schema
+    var commentSchema = new mongoose.Schema({
+      text:String,
+      username:String
+    })
+    var Comment = mongoose.model("Comment",commentSchema)
+
     //Post Schema
     var postSchema = new mongoose.Schema({
       username:String,
       title:String,
       img:String,
+      comments:[commentSchema],
       description:String
     })
     var Post = mongoose.model("Post",postSchema);
@@ -170,8 +178,6 @@ app.use(function(req,res,next)
 
     app.get("/news/:search/:page" , function(req,res)
     {
-      
-        
         newsapi.v2.everything({
             q: req.params.search,
             pageSize:8,
@@ -214,6 +220,35 @@ app.use(function(req,res,next)
           res.render("home",{posts:posts})
         }
       })
+    });
+
+    app.post("/comments/:id",(req,res)=>{
+      Post.findById(req.params.id, function(err, post){
+        if(err){
+            console.log(err);
+            res.redirect("/post");
+        } else {
+          var Com = 
+          {
+            username : req.user,
+            text : req.body.comment
+          }
+         Comment.create(Com, function(err, comment){
+            if(err){
+                console.log(err);
+            } else {
+                //add username and id to comment
+               
+                //save comment
+                comment.save();
+                post.comments.push(comment);
+                post.save();
+                console.log(comment);
+                res.redirect('/post');
+            }
+         });
+        }
+    });
     });
 
     app.get("/register" , function(req,res)

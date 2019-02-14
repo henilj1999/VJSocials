@@ -16,7 +16,19 @@
        <h2><%=post.title%></h2>
        <br>
        <p style="color:#B5B5B5"><%=post.description%></p>
-       <a class="btn btn-primary" href="#">View Project</a>
+       
+       <form method="POST" action="/comments/<%=post._id%>">
+          <input type="text" placeholder="Add a Comment" name = "comment">
+          <button class="btn btn-outline-primary">Comment</button>
+       </form>
+       <ul>
+       <% if (post){ %>
+       <% post.comments.forEach(function(comment){ %>
+          <li><%=comment.text%></li>
+          <% }); %>
+          <% } %>
+       </ul>
+
      </div>
    </div>
    <hr>

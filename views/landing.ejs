@@ -9,9 +9,7 @@
 
         <!-- link to include bootsrap and other stylesheets -->
         
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        
-        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">        
         <link rel="stylesheet" href="/stylesheets/landing.css"/>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
@@ -20,33 +18,55 @@
 </head>
 
     <body>
-            
-<header>
-    <h2><a href="#" style="text-decoration:none;">VJReddit</a></h2>
+    <div class = "container-fluid">
+    
+    <header>
+    <h2><a href="/" >VJReddit</a></h2>
     <nav>
-        <li><a href="/" style="text-decoration:none;">Home</a></li>
-        <li><a href="/news" style="text-decoration:none;">News</a></li>
-        <li><a href="/register" style="text-decoration:none;">Sign Up</a></li>
-        <li><a href="/login" style="text-decoration:none;">Login</a></li>
+        <li><a href="/post" >Home</a></li>
+        <li><a href="/news/technology/1">News</a></li>
+        <% if(!Cuser){ %>
+        <li><a href="/register" >Sign Up</a></li>
+        <li><a href="/login" >Login</a></li>
+        <% } else { %>
+        <li><a href="/logout" >Logout</a></li>
+        <% } %>
         
     </nav>
 </header>
-
-<div class="card w-50 own">
+<% if(!Cuser){ %>
+<div class="own">
   <div class="card-body">
     <p class="card-text">Not an Existing User?</p>
     <br>
-    <a href="/register" class="btn btn-primary butt">Sign Up</a>
-    <br>
+    <a href="/register" class="btn btn-outline-primary butt">Sign Up</a>
     <br>
     <br>
     <p class="card-text">Already a User? Start Posting...</p>
     <br>
-    <a href="/login" class="btn btn-primary butt">Login</a>
+    <a href="/login" class="btn btn-outline-primary butt">Login</a>
   </div>
 </div>
+<% } else { %>
+<div class="own">
+<div class="card-body">
+  <h1>Hi <%=Cuser.username%></h1>
+  <p class="card-text">Keep Posting Awesome Stuff...</p>
+  <br>
+  <form method="GET" action="/newpost">
+    <button class="btn btn-outline-primary">Post</button>
+</form>
+  <br>
+  <p class="card-text">Keep reading some awesome content...</p>
+  <br>
+  <a href="/news/technology/1" class="btn btn-outline-primary ">News</a>
+</div>
+</div>
 
+</div>
+<% } %>
 
+</div>
         
 </body>
 </html>

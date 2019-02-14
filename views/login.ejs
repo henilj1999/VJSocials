@@ -1,10 +1,63 @@
-<% include ./partials/header %> 
+<!DOCTYPE html>
+<html lang="en" >
 
-<h1>Login!</h1>
-<form action="/login" method="POST">
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
-    <input type="submit" value="Login!">
-</form>
+<head>
+  <meta charset="UTF-8">
+  <title>Login Box Concept</title>
+  
+  
+  <link rel='stylesheet' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/stylesheets/style.css">
 
-<% include ./partials/footer %> 
+  
+</head>
+
+<body>
+
+<header>
+    <h2><a href="/" style="text-decoration:none; color:white;">VJReddit</a></h2>
+    <nav>
+        <li><a href="/post" style="text-decoration:none; color:white;">Home</a></li>
+        <li><a href="/news/technology/1" style="text-decoration:none; color:white;">News</a></li>
+        <li><a href="/register" style="text-decoration:none; color:white;">Sign Up</a></li>
+        <li><a href="/login" style="text-decoration:none; color:white;">Login</a></li>
+        
+    </nav>
+</header>
+
+<div class="container pad">
+  <div class="row rpad">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Sign In</h5>
+
+          <form class="form-signin" method="POST" action="/login">
+            <div class="form-label-group">
+              <input type="text" id="u" name="username" class="form-control" placeholder="Username" required autofocus>
+              <label for="u">Username</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="p" name="password" class="form-control" placeholder="Password" required>
+              <label for="p">Password</label>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-3">
+              <input type="checkbox" class="custom-control-input" id="customCheck1">
+              <label class="custom-control-label" for="customCheck1">Remember password</label>
+            </div>
+            <input class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" value="Sign In">
+            
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+  
+
+  

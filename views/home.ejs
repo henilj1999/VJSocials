@@ -1,19 +1,25 @@
 <% include partials/header.ejs %>
-<h1>VJReddit</h1>
+
 <form method="GET" action="/newpost">
-    <button class="btn btn-primary">Post</button>
+    <button class="btn btn-outline-primary post">Post</button>
+    <br><br>
 </form>
-<div class="container">
-    <div class="row">
+<div class="container" style="color:white;">
      <% posts.forEach(function(post){ %>
-        <div class="col-lg-6 col-md-6">
-            <img src="<%= post.image %>" >
-            <div>
-                    <p><%= post.username %></p>
-                    <p><%= post.description %></p>
+     <div class="row neeche">
+     <div class="col-md-7">
+       <a href="#">
+         <img class="img-fluid rounded" src="<%=post.img%>" alt="">
+       </a>
+     </div>
+     <div class="col-md-5">
+       <h2><%=post.title%></h2>
+       <br>
+       <p style="color:#B5B5B5"><%=post.description%></p>
+       <a class="btn btn-primary" href="#">View Project</a>
+     </div>
+   </div>
+   <hr>
+                <% }) %>
             </div>
-        </div>
-     <% }) %>
-    </div>
-</div>
-<% include partials/footer.ejs %>
+            <% include partials/footer.ejs %>

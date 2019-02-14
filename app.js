@@ -1,21 +1,29 @@
-var express           = require("express"),
-    app               = express(),
-    bodyParser        = require("body-parser"),
-    mongoose          = require("mongoose"),
-    paginate          = require("mongoose-paginate"),
-    passport          = require("passport"),
-    LocalStrategy     = require("passport-local"),
+var express           =     require("express"),
+    app               =     express(),
+    bodyParser        =     require("body-parser"),
+    mongoose          =     require("mongoose"),
+    paginate          =     require("mongoose-paginate"),
+    passport          =     require("passport"),
+    LocalStrategy     =     require("passport-local"),
     passportLocalMongoose = require("passport-local-mongoose"),
-    NewsAPI           = require('newsapi'),
-    newsapi           = new NewsAPI('a4f6ef067df542f7a89754598c354849'),
-    nodemailer        =   require("nodemailer"),
-    transporter       =   nodemailer.createTransport({
+    NewsAPI           =     require('newsapi'),
+    fs                =     require("fs"),
+    newsapi           =     new NewsAPI('a4f6ef067df542f7a89754598c354849'),
+    nodemailer        =     require("nodemailer"),
+    transporter       =     nodemailer.createTransport({
     service:"gmail",
     auth:{
         user:"vjreddit@gmail.com",
         pass:"vjti@123"
     }
 });
+
+const multer = require("multer");
+const cloudinary = require("cloudinary");
+const cloudinaryStorage = require("multer-storage-cloudinary");
+const API_KEY = "229255114692397";
+const API_SECRET = "IfaEsihIsQW71ZBThvCBn-YS648";
+const cloud = "di143nol9";
 
     //User Schema
     var userSchema = new mongoose.Schema({
@@ -30,7 +38,8 @@ var express           = require("express"),
     //Post Schema
     var postSchema = new mongoose.Schema({
       username:String,
-      image:String,
+      title:String,
+      img:String,
       description:String
     })
     var Post = mongoose.model("Post",postSchema);
@@ -55,7 +64,18 @@ var express           = require("express"),
     app.set("view engine", "ejs");
     app.use(express.static(__dirname + "/public"));
 
-
+    cloudinary.config({
+      cloud_name: cloud,
+      api_key: API_KEY,
+      api_secret:API_SECRET
+      });
+      const storage = cloudinaryStorage({
+      cloudinary: cloudinary,
+      folder: "cloudinaryimages",
+      allowedFormats: ["jpg", "png" , "jpeg"]
+      });
+      const parser = multer({ storage: storage });
+    
 
 // seedDB(); //seed the database
 
@@ -83,7 +103,7 @@ app.use(function(req,res,next)
 
     //New post routes
 
-    app.get("/landing" , function(req,res)
+    app.get("/" , function(req,res)
     {
       res.render("landing");
     });
@@ -96,17 +116,21 @@ app.use(function(req,res,next)
       }
       
     })
-    app.post("/newpost",isLoggedIn,function(req,res){
-        var newPost = {
-          username:req.user.username,
-          image:req.body.image,
-          description:req.body.description
+    app.post("/newpost",isLoggedIn,parser.single("image"),function(req,res){
+        var newPost =
+        {
+         username : req.user.username,
+         title: req.body.title,
+         img : req.file.url,
+         description : req.body.description
         }
+        
         Post.create(newPost,function(err,post){
+          
           if(err){
             console.log(err.message);
           }else{
-            res.redirect("/")
+            res.redirect("/post")
           }
         }) 
       })
@@ -144,21 +168,28 @@ app.use(function(req,res,next)
     })
     })
 
-    app.get("/news/:page" , function(req,res)
+    app.get("/news/:search/:page" , function(req,res)
     {
-      var searchObj;
-      if(req.query.search){
-          searchObj=req.query.search;
-      }else{
-          searchObj="technology"
-      }
+      
+        
         newsapi.v2.everything({
-            q: searchObj,
-            pageSize:5,
+            q: req.params.search,
+            pageSize:8,
             page:req.params.page
           }).then(response => {
-            res.render("news" , {response:response,searchObj:searchObj});
+            res.render("news" , {response:response,search:req.params.search});
           });
+    });
+     app.get("/news/:searchObj/:id" , function(req,res)
+    {
+      var searchObj = req.params.searchObj;
+      var i = req.params.id;
+      newsapi.v2.everything({
+        q: searchObj,
+        pageSize:100
+      }).then(response => {       
+        res.render("show" , {response:response , i:i});
+      });
     });
   
 
@@ -168,14 +199,14 @@ app.use(function(req,res,next)
       var i = req.params.id;
       newsapi.v2.everything({
         q: searchObj,
-        pageSize:5,
+        pageSize:8,
         page:req.params.page
       }).then(response => {       
         res.render("show" , {response:response , i:i});
       });
     });
 
-    app.get("/" ,function(req,res){
+    app.get("/post" ,function(req,res){
       Post.find({},function(err,posts){
         if(err){
           console.log(err)
@@ -210,7 +241,7 @@ app.use(function(req,res,next)
 
     app.post("/login" , passport.authenticate("local",
     {
-      successRedirect: "/",
+      successRedirect: "/post",
       failureRedirect: "/login"}),
         function(req,res){
         });

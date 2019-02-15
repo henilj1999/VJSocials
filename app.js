@@ -71,7 +71,6 @@ const cloud = "di143nol9";
     app.use(bodyParser.urlencoded({extended: true}));
     app.set("view engine", "ejs");
     app.use(express.static(__dirname + "/public"));
-
     cloudinary.config({
       cloud_name: cloud,
       api_key: API_KEY,
@@ -296,7 +295,7 @@ app.use(function(req,res,next)
       }
     }
 
-    app.listen(8000,function()
+    app.listen(3000,function()
     {
-        console.log("YelpCamp Just started");
+        console.log("VJSocials Just started");
     });    
